@@ -1,0 +1,202 @@
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: url(podcast-backgrount.jpeg) no-repeat center center/ cover;
+    width: 100%;
+    height: 100vh;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.header{
+    color: #fff;
+}
+
+
+.bod-container {
+    margin-top: 20px;
+    display: flex;
+
+    /* width: 600px; */
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+/* Show summary container */
+.bod-container.show-summary {
+    width: 80%;
+} 
+
+#summaryContainer {
+    margin-left: 50px; 
+}
+
+.bod-container h1{
+    color: #fff;
+}
+h2, h3 {
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+
+form {
+    margin-bottom: 20px;
+}
+
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+
+input[type="text"] {
+   
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 4px solid #fff;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #e03800;
+}
+
+
+button {
+    background-color: #e03800;
+    /* background-color: #eb0808; */
+    color: white;
+    font-weight: 800;
+    font-size: 13px;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #fff;
+    color: #e03800;
+}
+
+.img-cov {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 10px;
+}
+img {
+    max-width: 100%;
+    height: 100%;
+}
+
+
+.accordion {
+    /* background-color: #fbfff1; */
+    background-color: #341948;
+    color: #fff;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    margin-bottom: 5px;
+    position: relative;
+}
+.accordion .icon {
+    position: absolute;
+    right: 15px;
+    transition: transform 0.4s;
+}
+.active, .accordion:hover {
+    background-color: #9388A2;
+    /* color: #000000; */
+    color: #fff;
+}
+ /* Rotate the plus icon to minus when active */
+ .accordion.active .icon {
+    transform: rotate(180deg);
+}
+/* Style for the minus icon */
+.accordion.active .icon::after {
+    content: "-";
+}
+
+/* Style for the plus icon */
+.accordion .icon::after {
+    content: "+";
+}
+
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin: 5px 0;
+    border-radius: 5px;
+    margin-bottom: 4px;
+    color: #000000;
+    font-size: 15px;
+    font-weight: 200;
+} 
+
+.processing-message {
+    /* background-color: #f0f0f0; */
+    /* background-color: #333; */
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* For smaller screens */
+@media only screen and (max-width: 600px) {
+    .bod-container {
+        padding: 0 10px; /* Adjust padding for smaller screens */
+    }
+
+    form {
+        max-width: 100%; /* Make form full width on smaller screens */
+    }
+
+    button {
+        max-width: 100%; /* Make button full width on smaller screens */
+    }
+}
+
+/* For larger screens */
+@media only screen and (min-width: 1200px) {
+    .bod-container {
+        max-width: 800px; /* Limit container width on larger screens */
+    }
+}
+
+

@@ -1,0 +1,114 @@
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Podcast Summary</title>
+     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+ </head>
+ <body>
+    <div class="header">
+        <h1>Podcast Summaries</h1>
+    </div>
+     <div class="bod-container">
+         <!-- <h1>Podcast Summaries</h1> -->
+         <form id="summaryForm">
+             <label for="episode_id">Enter Episode ID:</label>
+             <input type="text" id="episode_id" name="episode_id" placeholder="Episode ID" aria-label="Episode Id">
+             <button type="submit">Get Episode Summary</button>
+         </form>
+     
+         <div id="summaryContainer">
+             <!-- Summary will be displayed here -->
+         </div>
+     </div>
+     <script>
+        // Fetch and display summary when the page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            // Get the episode ID from the URL query parameters, if available
+            const urlParams = new URLSearchParams(window.location.search);
+            const episodeId = urlParams.get('episode_id');
+            if (episodeId) {
+                fetchSummary(episodeId);
+            }
+ 
+             // Add event listener for form submission
+            document.getElementById('summaryForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form submission
+                const episodeId = document.getElementById('episode_id').value;
+                showProcessingMessage(); // Display processing message
+                fetchSummary(episodeId);
+            });
+        });
+
+        function showProcessingMessage() {
+            var summaryContainer = document.getElementById('summaryContainer');
+            summaryContainer.innerHTML = '<p class="processing-message">Please wait at least 2 minutes. Wait time might differ depending on the file size...</p>';
+        }
+
+        function formatTime(milliseconds) {
+                    const totalSeconds = Math.floor(milliseconds / 1000); // Convert milliseconds to seconds
+                    const hours = Math.floor(totalSeconds / 3600);
+                    const minutes = Math.floor((totalSeconds % 3600) / 60);
+                    const seconds = totalSeconds % 60;
+
+                    // Ensure each part has two digits
+                    const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    return formattedTime;
+        }
+
+ 
+        function fetchSummary(episodeId) {
+            fetch(`/summary/${episodeId}`)
+                 .then(response => response.json())
+                 .then(data => {
+                     // Display the summary in the summaryContainer div
+                    var summaryContainer = document.getElementById('summaryContainer');
+                
+                    summaryContainer.innerHTML = `
+                        <h2>${data.podcast_title} - ${data.episode_title}</h2> 
+                        <div class="img-cov"> 
+                            <img src="${data.thumbnail}" alt="Podcast Thumbnail">
+                        </div>
+        
+                        <!--  display summary -->
+                        ${data.chapters.map(chapter => `
+                        <button class="accordion">${chapter.gist} - ${formatTime(chapter.start)} <span class="icon"></span> </button>
+                        <div class="panel">
+                            <ul>
+                                <li>${chapter.summary}</li>   <!--Display the summary in each list item  -->
+                            </ul>
+                        </div>
+                     `).join('')}
+                         <a href="/transcripts/${episodeId}_chapters.json">Download Transcript</a>
+                     `;
+                     
+                    // Add click event listeners to the accordion buttons
+                    var acc = document.getElementsByClassName("accordion");
+                    for (var i = 0; i < acc.length; i++) {
+                         acc[i].addEventListener("click", function() {
+                         this.classList.toggle("active");
+                         var panel = this.nextElementSibling;
+                         if (panel.style.display === "block") {
+                             panel.style.display = "none";
+                         } else {
+                             panel.style.display = "block";
+                         }
+                    });
+                }
+                   // Add class to bod-container for transition effect
+                    document.querySelector('.bod-container').classList.add('show-summary');
+ 
+                 })
+                 .catch(error => {
+                     // Display error message if any
+                     var summaryContainer = document.getElementById('summaryContainer');
+                     summaryContainer.innerHTML = `<p>${error}</p>`;
+                 });
+        }
+     </script>
+ </body>
+ </html>
+ 
